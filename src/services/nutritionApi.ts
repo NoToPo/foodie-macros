@@ -1,6 +1,6 @@
 import { WebhookResponse } from "@/types/nutrition";
 
-const WEBHOOK_URL = "http://localhost:5678/webhook-test/meal-ai";
+const WEBHOOK_URL = "http://localhost:5678/webhook/meal-ai";
 
 export const analyzeMealPhoto = async (file: File): Promise<WebhookResponse> => {
   const formData = new FormData();
@@ -17,9 +17,9 @@ export const analyzeMealPhoto = async (file: File): Promise<WebhookResponse> => 
 
   const data = await response.json();
   
-  // Handle the array response format from the webhook
-  if (Array.isArray(data) && data.length > 0) {
-    return data[0] as WebhookResponse;
+  // Handle the direct object response format from the webhook
+  if (data && data.output) {
+    return data as WebhookResponse;
   }
   
   throw new Error('Invalid response format');
