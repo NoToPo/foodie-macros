@@ -5,6 +5,8 @@ import { LoadingAnalysis } from "@/components/LoadingAnalysis";
 import { NutritionResults } from "@/components/NutritionResults";
 import { toast } from "sonner";
 
+// SEO: single H1 is inside HeroSection
+
 type AppState = 'upload' | 'analyzing' | 'results';
 
 interface NutritionData {
@@ -26,10 +28,7 @@ const Index = () => {
     
     // Simulate API call - replace with actual POST request
     try {
-      // Mock delay for demo
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Mock nutrition data - replace with actual API response
+      await new Promise(resolve => setTimeout(resolve, 1500));
       const mockData: NutritionData = {
         protein: Math.floor(Math.random() * 30) + 10,
         carbs: Math.floor(Math.random() * 50) + 20,
@@ -37,7 +36,6 @@ const Index = () => {
         calories: Math.floor(Math.random() * 300) + 200,
         confidence: 0.85 + Math.random() * 0.15
       };
-      
       setNutritionData(mockData);
       setState('results');
       toast.success("Analysis complete!");
@@ -59,11 +57,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <main className="min-h-screen bg-gradient-hero">
       <div className="container max-w-2xl mx-auto px-4 py-8">
         <HeroSection />
         
-        <div className="space-y-6">
+        <section className="space-y-6">
           {state === 'upload' && (
             <PhotoUpload
               onPhotoSelect={handlePhotoSelect}
@@ -80,13 +78,13 @@ const Index = () => {
               onReset={handleReset}
             />
           )}
-        </div>
+        </section>
 
         <footer className="text-center mt-12 text-muted-foreground text-sm">
           <p>Powered by AI • Results are estimates</p>
         </footer>
       </div>
-    </div>
+    </main>
   );
 };
 

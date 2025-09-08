@@ -57,91 +57,95 @@ export const PhotoUpload = ({ onPhotoSelect, selectedPhoto, onClear }: PhotoUplo
   };
 
   return (
-    <Card className="p-6 bg-gradient-card shadow-soft border-accent/20">
-      {previewUrl ? (
-        <div className="relative">
-          <img
-            src={previewUrl}
-            alt="Selected meal"
-            className="w-full h-64 object-cover rounded-lg"
-          />
-          <Button
-            onClick={handleClear}
-            variant="destructive"
-            size="sm"
-            className="absolute top-2 right-2"
+    <section id="analyzer" aria-label="Meal nutrition analyzer">
+      <Card className="p-5 sm:p-6 bg-gradient-card shadow-soft border-primary/20 animate-scale-in">
+        {previewUrl ? (
+          <div className="relative">
+            <img
+              src={previewUrl}
+              alt="Selected meal to analyze"
+              className="w-full h-64 object-cover rounded-lg"
+            />
+            <Button
+              onClick={handleClear}
+              variant="destructive"
+              size="sm"
+              className="absolute top-2 right-2"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={`rounded-lg p-6 sm:p-8 text-center transition-colors duration-200 ${
+              dragActive ? 'ring-2 ring-primary bg-accent/50' : 'border border-dashed border-muted-foreground/25 bg-background'
+            }`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
           >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ) : (
-        <div
-          className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors duration-200 ${
-            dragActive ? 'border-primary bg-accent/50' : 'border-muted-foreground/25'
-          }`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          <div className="space-y-4">
-            <div className="flex justify-center space-x-4">
-              <div className="p-3 bg-primary/10 rounded-full">
-                <Camera className="h-8 w-8 text-primary" />
+            <div className="space-y-4">
+              <div className="flex justify-center space-x-4">
+                <div className="p-3 bg-primary/10 rounded-full">
+                  <Camera className="h-8 w-8 text-primary" />
+                </div>
+                <div className="p-3 bg-secondary/10 rounded-full">
+                  <Upload className="h-8 w-8 text-secondary" />
+                </div>
               </div>
-              <div className="p-3 bg-secondary/10 rounded-full">
-                <Upload className="h-8 w-8 text-secondary" />
-              </div>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                Upload Your Meal Photo
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                Take a photo or drag & drop an image to analyze nutrition
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                onClick={() => cameraInputRef.current?.click()}
-                variant="outline"
-                className="border-primary/20 hover:bg-primary/5"
-              >
-                <Camera className="h-4 w-4 mr-2" />
-                Take Photo
-              </Button>
               
-              <Button
-                onClick={() => fileInputRef.current?.click()}
-                variant="outline"
-                className="border-secondary/20 hover:bg-secondary/5"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Upload File
-              </Button>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  Upload or take a photo
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Supported: JPG, PNG • Max 10MB
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  onClick={() => cameraInputRef.current?.click()}
+                  variant="cta"
+                  size="xl"
+                >
+                  <Camera className="h-5 w-5 mr-2" />
+                  Use Camera
+                </Button>
+                
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="hero"
+                  size="xl"
+                >
+                  <Upload className="h-5 w-5 mr-2" />
+                  Upload File
+                </Button>
+              </div>
+
+              <p className="text-xs text-muted-foreground">Drag & drop image here</p>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-      
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-    </Card>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </Card>
+    </section>
   );
 };
