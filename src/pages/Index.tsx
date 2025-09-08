@@ -3,19 +3,13 @@ import { HeroSection } from "@/components/HeroSection";
 import { PhotoUpload } from "@/components/PhotoUpload";
 import { LoadingAnalysis } from "@/components/LoadingAnalysis";
 import { NutritionResults } from "@/components/NutritionResults";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
+import { analyzeMealPhoto } from "@/services/nutritionApi";
+import { NutritionData } from "@/types/nutrition";
 
 // SEO: single H1 is inside HeroSection
 
 type AppState = 'upload' | 'analyzing' | 'results';
-
-interface NutritionData {
-  protein: number;
-  carbs: number;
-  fat: number;
-  calories: number;
-  confidence?: number;
-}
 
 const Index = () => {
   const [state, setState] = useState<AppState>('upload');
@@ -26,22 +20,26 @@ const Index = () => {
     setSelectedPhoto(file);
     setState('analyzing');
     
-    // Simulate API call - replace with actual POST request
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const mockData: NutritionData = {
-        protein: Math.floor(Math.random() * 30) + 10,
-        carbs: Math.floor(Math.random() * 50) + 20,
-        fat: Math.floor(Math.random() * 20) + 5,
-        calories: Math.floor(Math.random() * 300) + 200,
-        confidence: 0.85 + Math.random() * 0.15
-      };
-      setNutritionData(mockData);
-      setState('results');
-      toast.success("Analysis complete!");
+      const response = await analyzeMealPhoto(file);
+      
+      if (response.output.status === 'success') {
+        setNutritionData(response.output);
+        setState('results');
+        toast({
+          title: "Analysis Complete!",
+          description: `Found ${response.output.food.length} food items in your meal.`,
+        });
+      } else {
+        throw new Error('Analysis failed');
+      }
     } catch (error) {
       console.error('Analysis failed:', error);
-      toast.error("Analysis failed. Please try again.");
+      toast({
+        title: "Analysis Failed",
+        description: "Please try again with a clearer photo.",
+        variant: "destructive",
+      });
       setState('upload');
     }
   };
