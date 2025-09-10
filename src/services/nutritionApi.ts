@@ -1,6 +1,6 @@
 import { WebhookResponse } from "@/types/nutrition";
 
-const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL;
+const WEBHOOK_URL = "http://localhost:5678/webhook/meal-ai";
 
 export const analyzeMealPhoto = async (file: File): Promise<WebhookResponse> => {
   const formData = new FormData();

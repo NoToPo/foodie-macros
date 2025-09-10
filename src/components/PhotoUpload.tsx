@@ -225,6 +225,15 @@ export const PhotoUpload = ({ onPhotoSelect, selectedPhoto, onClear, onRef }: Ph
             onDrop={handleDrop}
           >
             <div className="space-y-4 sm:space-y-6">
+              <div className="flex justify-center space-x-4 sm:space-x-6">
+                <div className="p-3 sm:p-4 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl shadow-lg">
+                  <Camera className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+                </div>
+                <div className="p-3 sm:p-4 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl shadow-lg">
+                  <Upload className="h-8 w-8 sm:h-10 sm:w-10 text-secondary" />
+                </div>
+              </div>
+              
               <div className="space-y-2 px-2">
                 <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                   Upload or take a photo
